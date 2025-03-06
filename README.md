@@ -29,9 +29,9 @@ It provides a **scalable, type-safe, and containerized solution** for modern web
 
 ### 1. Clone the Repository
 
-git clone https://github.com/saeedhei/hyrance.git
+git clone https://github.com/Soudabeh-Noorollahi/DeutschVerben-C1.git
 
-- cd Hyrance
+- cd DeutschVerben-C1
 
 ### 2. Start Docker Containers
 
