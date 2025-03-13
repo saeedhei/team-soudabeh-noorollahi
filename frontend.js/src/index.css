@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -13,17 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  text-decoration: inherit;
-  color: inherit;
-}
 
-body {
-  margin: auto;
-  max-width: 1400px;
-  min-height: 100vh;
-  padding: 10px;
-}
 
 * {
   padding: 0;
@@ -53,4 +43,87 @@ select {
   button {
     background-color: #007bff;
   }
+} */
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+body {
+  margin: auto;
+  max-width: 1400px;
+  min-height: 100vh;
+  padding: 10px;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  background-color: var(--background-dark);
+  color: var(--primary-color-light);
+}
+
+header,
+footer {
+  padding: 20px 0;
+}
+
+main {
+  padding: 20px 0;
+}
+
+button {
+  padding: var(--button-padding);
+  background-color: var(--primary-color-light);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--button-hover-color);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background-light: #ffffff;
+    --primary-color-light: #213547;
+  }
+
+  body {
+    background-color: var(--background-light);
+    color: var(--primary-color-light);
+  }
+
+  button {
+    background-color: var(--primary-color-light);
+  }
+
+  a:hover {
+    color: var(--link-hover-color);
+  }
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
 }
