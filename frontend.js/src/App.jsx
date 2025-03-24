@@ -23,7 +23,9 @@ const flashcards = [
 function App() {
   return (
     <Layout>
-      <FlashcardList flashcards={flashcards} />
+      <div className="container mx-auto px-4 py-8">
+        <FlashcardList flashcards={flashcards} />
+      </div>
     </Layout>
   );
 }
