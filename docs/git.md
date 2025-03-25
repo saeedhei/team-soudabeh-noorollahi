@@ -29,9 +29,11 @@ git remote add origin https://github.com/saeedhei/devops-github-actions.git
 git branch -M main
 git push -u origin main
 
-git rm -rf frontend.js
-git commit -m "Force remove folder_name"
+rm -rf frontend.js
+git add -u
+git commit -m "Force remove frontend.js"
 git push origin main
+
 
 git fetch origin
 git reset --hard origin/main
