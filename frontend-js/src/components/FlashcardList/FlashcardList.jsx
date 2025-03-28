@@ -72,7 +72,7 @@ function FlashcardList({ flashcards }) {
 
             {/* Evaluation Buttons */}
             <div className="w-full mt-auto">
-              <div className="flex flex-col sm:flex-row gap-2 w-full">
+              <div className="flex flex-col sm:flex-row gap-1 w-full">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -81,7 +81,7 @@ function FlashcardList({ flashcards }) {
                   }}
                   className="flex-1 py-2 bg-green-500 hover:bg-green-600 text-white rounded transition-colors "
                 >
-                  بلدم
+                  بلد نیستم
                 </button>
                 <button
                   type="button"
@@ -101,7 +101,7 @@ function FlashcardList({ flashcards }) {
                   }}
                   className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
                 >
-                  بلد نیستم
+                  بلدم
                 </button>
               </div>
             </div>
@@ -110,29 +110,33 @@ function FlashcardList({ flashcards }) {
       </div>
 
       {/* Navigation Controls */}
-      <div className="flex items-center justify-center gap-4 w-full max-w-md">
+      <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-md">
+        {/* Previous Button */}
         <button
           onClick={handlePrevious}
           disabled={currentIndex === 0}
-          className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition-colors text-sm  font-medium"
+          className="min-w-[120px] px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition-colors text-sm font-medium flex items-center justify-center"
           aria-label="Previous card"
         >
-          {/* <ChevronLeft className="w-6 h-6 text-gray-700" /> */}Previous
+          {/* <ChevronLeft className="w-6 h-6 text-gray-700" /> */}
+          Previous
         </button>
 
+        {/* Start Again Button */}
         <div className="flex-1 flex justify-center">
           <button
             onClick={handleReset}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full text-sm font-medium transition-colors"
+            className="min-w-[120px] px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full text-sm font-medium transition-colors"
           >
             Start again
           </button>
         </div>
 
+        {/* Next Button */}
         <button
           onClick={handleNext}
           disabled={currentIndex === flashcards.length - 1}
-          className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition-colors text-sm  font-medium"
+          className="min-w-[120px] px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition-colors text-sm font-medium flex items-center justify-center"
           aria-label="Next card"
         >
           {/* <ChevronRight className="w-6 h-6 text-gray-700" /> */}
