@@ -13,4 +13,14 @@
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+}
+
+@layer base {
+  html,
+  body {
+    touch-action: manipulation;
+  }
 }
