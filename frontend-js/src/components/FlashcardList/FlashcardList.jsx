@@ -41,10 +41,11 @@ function FlashcardList({ flashcards }) {
   const currentFlashcard = flashcards[currentIndex];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh]">
+    <div className="flex flex-col items-center justify-center min-h-[60vh] ">
       {/* Flash Card */}
+
       <div
-        className={`relative w-full max-w-md h-64 perspective-1000 mb-8 cursor-pointer ${
+        className={`relative w-full max-w-xs md:max-w-md lg:max-w-lg h-[400px] md:h-[450px] lg:h-[500px] perspective-1000 mb-8 cursor-pointer touch-manipulation ${
           isAnimating ? "pointer-events-none" : ""
         }`}
       >
@@ -56,9 +57,10 @@ function FlashcardList({ flashcards }) {
         >
           {/* Front Side */}
           <div className="absolute w-full h-full bg-white shadow-xl rounded-xl flex flex-col items-center justify-center p-6 backface-hidden border-2 border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-xl md:text-2xl  font-bold text-gray-800 mb-2">
               {currentFlashcard.verb}
             </h2>
+
             <p className="text-lg text-gray-600">
               {currentFlashcard.preposition}
             </p>
@@ -81,7 +83,7 @@ function FlashcardList({ flashcards }) {
                   }}
                   className="flex-1 py-2 bg-green-500 hover:bg-green-600 text-white rounded transition-colors "
                 >
-                  بلد نیستم
+                  Know
                 </button>
                 <button
                   type="button"
@@ -91,7 +93,7 @@ function FlashcardList({ flashcards }) {
                   }}
                   className="flex-1 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded transition-colors"
                 >
-                  تا حدی بلدم
+                  Almost Know
                 </button>
                 <button
                   type="button"
@@ -101,7 +103,7 @@ function FlashcardList({ flashcards }) {
                   }}
                   className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
                 >
-                  بلدم
+                  Don't Know
                 </button>
               </div>
             </div>
