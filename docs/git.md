@@ -176,8 +176,3 @@ git reset --merge
 > **Important:** Always `fetch` before syncing to avoid conflicts.
 > Use `-f` and `--hard` commands with caution, as they can **overwrite local changes** permanently.
 > If unsure, make a backup branch before performing dangerous operations like force-pushing.
-
-```
-
-
-```
