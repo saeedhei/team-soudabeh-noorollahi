@@ -178,6 +178,3 @@ git reset --merge
 > If unsure, make a backup branch before performing dangerous operations like force-pushing.
 
 ```
-
-
-```
