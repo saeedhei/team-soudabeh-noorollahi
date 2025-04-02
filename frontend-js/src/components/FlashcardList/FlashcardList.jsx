@@ -157,8 +157,7 @@
 // export default FlashcardList;
 
 import React, { useState } from "react";
-import Flashcard from "../Flashcard/Flashcard";
-import FlashcardNavigation from "../Flashcard/FlashcardNavigation";
+import {Flashcard, FlashcardNavigation} from "../Flashcard";
 
 function FlashcardList({ flashcards }) {
   const [currentIndex, setCurrentIndex] = useState(0);
