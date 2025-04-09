@@ -6,8 +6,8 @@ const flashcardSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      minlength: [2],
-      maxlength: [50],
+      minlength: [2, "Verb must be at least 2 characters"],
+      maxlength: [50, "Verb must be at most 50 characters"],
     },
     preposition: {
       type: String,
