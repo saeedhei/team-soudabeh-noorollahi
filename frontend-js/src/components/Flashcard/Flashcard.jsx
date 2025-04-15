@@ -23,7 +23,7 @@ function Flashcard({ flashcard, isFlipped, handleFlip, handleCardStatus }) {
         {/* Back Side */}
         <div className="absolute w-full h-full bg-white shadow-xl rounded-xl flex flex-col items-center justify-center p-6 backface-hidden border-2 border-gray-200 rotate-y-180">
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
-            {flashcard.translation}
+            {flashcard.meaning}
           </h2>
           {isFlipped && (
             <FlashcardButtons handleCardStatus={handleCardStatus} />

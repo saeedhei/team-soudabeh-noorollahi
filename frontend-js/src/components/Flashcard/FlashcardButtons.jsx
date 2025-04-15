@@ -9,7 +9,7 @@ function FlashcardButtons({ handleCardStatus }) {
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            handleCardStatus(0);
+            handleCardStatus(0); //Know
           }}
           className="flex-1 py-2 bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
         >
@@ -19,7 +19,7 @@ function FlashcardButtons({ handleCardStatus }) {
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            handleCardStatus(1);
+            handleCardStatus(1); // Almost Know
           }}
           className="flex-1 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded transition-colors"
         >
@@ -29,7 +29,7 @@ function FlashcardButtons({ handleCardStatus }) {
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            handleCardStatus(2);
+            handleCardStatus(2); // Dont Know
           }}
           className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
         >
