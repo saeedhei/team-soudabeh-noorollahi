@@ -22,11 +22,11 @@ const resolvers = {
     },
     updateFlashcard: async (
       _,
-      { id, verb, preposition, meaning, difficulty }
+      { id, verb, preposition, meaning, difficulty, status }
     ) => {
       const updatedFlashcard = await Flashcard.findByIdAndUpdate(
         id,
-        { verb, preposition, meaning, difficulty },
+        { verb, preposition, meaning, difficulty, status },
         { new: true }
       );
       return updatedFlashcard;

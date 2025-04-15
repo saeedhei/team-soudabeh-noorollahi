@@ -7,6 +7,7 @@ const typeDefs = gql`
     preposition: String!
     meaning: String!
     difficulty: String
+    status: String
     createdAt: String
     updatedAt: String
   }
@@ -29,6 +30,7 @@ const typeDefs = gql`
       preposition: String
       meaning: String
       difficulty: String
+      status: String
     ): Flashcard
     deleteFlashcard(id: ID!): String
   }
