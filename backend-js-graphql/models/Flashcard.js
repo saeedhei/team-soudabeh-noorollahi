@@ -24,6 +24,11 @@ const flashcardSchema = new mongoose.Schema(
       enum: ["easy", "medium", "hard"],
       default: "medium",
     },
+    status: {
+      type: String,
+      enum: ["known", "almost", "unknown"],
+      default: "unknown",
+    },
   },
   {
     timestamps: true,
