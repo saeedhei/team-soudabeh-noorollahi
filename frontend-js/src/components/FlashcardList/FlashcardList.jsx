@@ -98,7 +98,7 @@ function FlashcardList({ flashcards }) {
         handleFlip={handleFlip}
         handleCardStatus={handleCardStatus}
       />
-
+      {/* {isFlipped && <FlashcardButtons handleCardStatus={handleCardStatus} />} */}
       <FlashcardNavigation
         handlePrevious={handlePrevious}
         handleNext={handleNext}

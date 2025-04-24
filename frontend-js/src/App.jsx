@@ -1,3 +1,19 @@
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Cards from './pages/Cards'
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/cards" element={<Cards />} />
+    </Routes>
+  )
+}
+
+export default App
+
+
 // import React from "react";
 // import Layout from "./components/Layout/Layout";
 // import FlashcardList from "./components/FlashcardList/FlashcardList";
@@ -23,19 +39,3 @@
 // }
 
 // export default App;
-// src/App.jsx
-
-// src/App.jsx
-import React from "react";
-import { BrowserRouter } from "react-router-dom";
-import AppRouter from "./Router";
-
-function App() {
-  return (
-    <BrowserRouter>
-      <AppRouter />
-    </BrowserRouter>
-  );
-}
-
-export default App;
