@@ -2,7 +2,7 @@ import Flashcard from "../models/Flashcard.js";
 
 const resolvers = {
   Query: {
-    getFlashcards: async () => {
+    cards: async () => {
       return await Flashcard.find();
     },
     getFlashcard: async (_, { id }) => {
