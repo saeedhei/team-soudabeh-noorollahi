@@ -13,7 +13,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    getFlashcards: [Flashcard]
+    cards: [Flashcard]
     getFlashcard(id: ID!): Flashcard
   }
 
