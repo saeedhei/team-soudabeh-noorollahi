@@ -1,6 +1,6 @@
-import { Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import Cards from './pages/Cards'
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Cards from "./pages/Cards";
 
 function App() {
   return (
@@ -8,11 +8,10 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/cards" element={<Cards />} />
     </Routes>
-  )
+  );
 }
 
-export default App
-
+export default App;
 
 // import React from "react";
 // import Layout from "./components/Layout/Layout";

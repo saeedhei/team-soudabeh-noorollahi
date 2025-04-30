@@ -8,7 +8,7 @@ function FlashcardButtons({ handleCardStatus }) {
         <button
           type="button"
           onClick={(e) => {
-            e.stopPropagation();
+            e.stopPropagation("Clicked!");
             handleCardStatus(0); //Know
           }}
           className="flex-1 py-2 bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
