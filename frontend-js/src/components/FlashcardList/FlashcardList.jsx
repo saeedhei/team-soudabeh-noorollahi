@@ -1,17 +1,127 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
+// import { UPDATE_FLASHCARD_STATUS } from "../../graphql/mutations/cardMutations";
+// import Flashcard from "../Flashcard/Flashcard";
+// import FlashcardNavigation from "../Flashcard/FlashcardNavigation";
+// import ProgressStats from "../Flashcard/ProgressStats";
 
+// import { useMutation } from "@apollo/client";
+
+// function FlashcardList({ flashcards }) {
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const [isFlipped, setIsFlipped] = useState(false);
+
+//   // statusCounter
+//   const [statusCount, setStatusCount] = useState({
+//     known: 0,
+//     almost: 0,
+//     unknown: 0,
+//   });
+
+//   const [updateFlashcardStatus] = useMutation(UPDATE_FLASHCARD_STATUS);
+
+//   const handleNext = () => {
+//     if (currentIndex < flashcards.length - 1) {
+//       setIsFlipped(false);
+//       setCurrentIndex(currentIndex + 1);
+//     }
+//   };
+
+//   const handlePrevious = () => {
+//     if (currentIndex > 0) {
+//       setIsFlipped(false);
+//       setCurrentIndex(currentIndex - 1);
+//     }
+//   };
+
+//   const handleFlip = () => {
+//     setIsFlipped(!isFlipped);
+//   };
+
+//   const handleReset = () => {
+//     setIsFlipped(false);
+//     setCurrentIndex(0);
+//     setStatusCount({ known: 0, almost: 0, unknown: 0 });
+//   };
+
+//   const handleCardStatus = async (statusCode) => {
+//     const statusMap = {
+//       0: "known",
+//       1: "almost",
+//       2: "unknown",
+//     };
+//     const status = statusMap[statusCode];
+//     const currentFlashcard = flashcards[currentIndex];
+
+//     try {
+//       //  send mutation to backend
+//       await updateFlashcardStatus({
+//         variables: {
+//           id: currentFlashcard.id,
+//           status,
+//         },
+//       });
+
+//       // Increase status count
+//       setStatusCount((prev) => {
+//         const newCount = { ...prev };
+//         newCount[status] += 1;
+//         return newCount;
+//       });
+
+//       // If we reach the last card, let's start over.
+//       if (currentIndex === flashcards.length - 1) {
+//         setCurrentIndex(0); // Return to the first card
+//         setStatusCount({ known: 0, almost: 0, unknown: 0 }); //Reset statuses
+//       } else {
+//         handleNext(); // Show next card
+//       }
+//     } catch (error) {
+//       console.error("Update failed", error);
+//     }
+//   };
+
+//   const currentFlashcard = flashcards[currentIndex];
+
+//   return (
+//     <div className="flex flex-col items-center justify-center min-h-[60vh]">
+//       {/* Progress bar*/}
+//       <ProgressStats
+//         currentIndex={currentIndex}
+//         total={flashcards.length}
+//         statusCount={statusCount}
+//       />
+
+//       <Flashcard
+//         flashcard={currentFlashcard}
+//         isFlipped={isFlipped}
+//         handleFlip={handleFlip}
+//         handleCardStatus={handleCardStatus}
+//       />
+//       {/* {isFlipped && <FlashcardButtons handleCardStatus={handleCardStatus} />} */}
+//       <FlashcardNavigation
+//         handlePrevious={handlePrevious}
+//         handleNext={handleNext}
+//         handleReset={handleReset}
+//         currentIndex={currentIndex}
+//         total={flashcards.length}
+//       />
+//     </div>
+//   );
+// }
+
+// export default FlashcardList;
+
+import React, { useState } from "react";
+import { UPDATE_FLASHCARD_STATUS } from "../../graphql/mutations/cardMutations";
 import Flashcard from "../Flashcard/Flashcard";
 import FlashcardNavigation from "../Flashcard/FlashcardNavigation";
 import ProgressStats from "../Flashcard/ProgressStats";
-
 import { useMutation } from "@apollo/client";
-import { UPDATE_FLASHCARD_STATUS } from "../../graphql/mutations";
 
 function FlashcardList({ flashcards }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
-  // statusCounter
   const [statusCount, setStatusCount] = useState({
     known: 0,
     almost: 0,
@@ -53,8 +163,17 @@ function FlashcardList({ flashcards }) {
     const status = statusMap[statusCode];
     const currentFlashcard = flashcards[currentIndex];
 
+    if (!currentFlashcard) {
+      console.error("No flashcard at current index!");
+      return;
+    }
+
     try {
-      //  send mutation to backend
+      console.log("Sending mutation with:", {
+        id: currentFlashcard?.id,
+        status,
+      });
+
       await updateFlashcardStatus({
         variables: {
           id: currentFlashcard.id,
@@ -62,19 +181,15 @@ function FlashcardList({ flashcards }) {
         },
       });
 
-      // Increase status count
-      setStatusCount((prev) => {
-        const newCount = { ...prev };
-        newCount[status] += 1;
-        return newCount;
-      });
+      setStatusCount((prev) => ({ ...prev, [status]: prev[status] + 1 }));
 
-      // If we reach the last card, let's start over.
-      if (currentIndex === flashcards.length - 1) {
-        setCurrentIndex(0); // Return to the first card
-        setStatusCount({ known: 0, almost: 0, unknown: 0 }); //Reset statuses
+      // go to next car
+      if (currentIndex < flashcards.length - 1) {
+        setIsFlipped(false); //Turn the card over
+        setCurrentIndex((prevIndex) => prevIndex + 1);
       } else {
-        handleNext(); // Show next card
+        alert("You've completed all cards! 🎉");
+        handleReset(); // Reset cards
       }
     } catch (error) {
       console.error("Update failed", error);
@@ -85,7 +200,7 @@ function FlashcardList({ flashcards }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh]">
-      {/* Progress bar*/}
+      {/* Progress bar */}
       <ProgressStats
         currentIndex={currentIndex}
         total={flashcards.length}
@@ -98,7 +213,8 @@ function FlashcardList({ flashcards }) {
         handleFlip={handleFlip}
         handleCardStatus={handleCardStatus}
       />
-      {/* {isFlipped && <FlashcardButtons handleCardStatus={handleCardStatus} />} */}
+
+      {/* Navigation buttons */}
       <FlashcardNavigation
         handlePrevious={handlePrevious}
         handleNext={handleNext}

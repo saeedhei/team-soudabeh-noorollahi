@@ -8,7 +8,7 @@ function Flashcard({ flashcard, isFlipped, handleFlip, handleCardStatus }) {
       onClick={handleFlip}
     >
       <div
-        className={`w-full h-full transition-all duration-500 transform-style-preserve-3d ${
+        className={` relative w-full h-full transition-all duration-500 transform-style-preserve-3d ${
           isFlipped ? "rotate-y-180" : ""
         }`}
       >
@@ -21,7 +21,7 @@ function Flashcard({ flashcard, isFlipped, handleFlip, handleCardStatus }) {
         </div>
 
         {/* Back Side */}
-        <div className="absolute w-full h-full bg-white shadow-xl rounded-xl flex flex-col items-center justify-center p-6 backface-hidden border-2 border-gray-200 rotate-y-180">
+        <div className="absolute w-full h-full bg-white shadow-xl rounded-xl flex flex-col justify-between items-center  p-6 backface-hidden border-2 border-gray-200 rotate-y-180 backface-hidden">
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
             {flashcard.meaning}
           </h2>

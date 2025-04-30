@@ -1,6 +1,11 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_CARDS } from "../graphql/queries/cardQueries";
+import FlashcardList from "../components/FlashcardList/FlashcardList";
 
 export default function Home() {
+  const { loading, error, data } = useQuery(GET_CARDS);
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
@@ -19,8 +24,16 @@ export default function Home() {
       {/* Main Content */}
       <main className="p-8">
         <h2 className="text-2xl font-semibold">Welcome Home</h2>
-        <p className="mt-2 text-gray-600">Use the menu to navigate to the Cards page.</p>
+        <p className="mt-2 text-gray-600">
+          Use the menu to navigate to the Cards page.
+        </p>
+
+        <div className="container mx-auto px-4 py-8">
+          {loading && <p>Loading...</p>}
+          {error && <p>Error: {error.message}</p>}
+          {data && <FlashcardList flashcards={data.cards} />}
+        </div>
       </main>
     </div>
-  )
+  );
 }
