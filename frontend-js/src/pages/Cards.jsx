@@ -1,6 +1,7 @@
 // pages/Cards.jsx
 import { gql, useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
+import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
 
 // GraphQL query to fetch flashcards
 const GET_CARDS = gql`
@@ -66,6 +67,12 @@ export default function Cards() {
             </div>
           ))}
         </div>
+        <FlashcardFormModal
+          isOpen={true}
+          onClose={() => {}}
+          onSubmit={() => {}}
+          initialData={null}
+        />
       </main>
     </div>
   );
