@@ -2,6 +2,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
+import { DELETE_FLASHCARD } from "../graphql/mutations/cardMutations";
 
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
@@ -42,6 +43,7 @@ export default function Cards() {
   const [editingCard, setEditingCard] = useState(null);
   const [createFlashcard] = useMutation(CREATE_FLASHCARD);
   const [updateFlashcard] = useMutation(UPDATE_FLASHCARD);
+  const [deleteFlashcard] = useMutation(DELETE_FLASHCARD);
 
   const handleFormSubmit = async (formData) => {
     try {
@@ -121,6 +123,24 @@ export default function Cards() {
                   className="text-blue-600 hover:underline text-sm"
                 >
                   ✏️ Edit
+                </button>
+                <button
+                  onClick={async () => {
+                    const confirmed = window.confirm(
+                      "Are you sure you want to delete this flashcard?"
+                    );
+                    if (!confirmed) return;
+
+                    try {
+                      await deleteFlashcard({ variables: { id: card.id } });
+                      refetch();
+                    } catch (err) {
+                      console.error("Delete failed:", err);
+                    }
+                  }}
+                  className="text-red-600 hover:underline text-sm"
+                >
+                  🗑️ Delete
                 </button>
               </div>
             </div>

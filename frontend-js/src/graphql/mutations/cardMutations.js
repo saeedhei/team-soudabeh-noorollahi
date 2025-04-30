@@ -51,3 +51,9 @@ export const UPDATE_FLASHCARD_STATUS = gql`
     }
   }
 `;
+
+export const DELETE_FLASHCARD = gql`
+  mutation DeleteFlashcard($id: ID!) {
+    deleteFlashcard(id: $id)
+  }
+`;
