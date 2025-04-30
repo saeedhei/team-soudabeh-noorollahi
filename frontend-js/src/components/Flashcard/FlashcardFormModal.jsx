@@ -33,6 +33,11 @@ export default function FlashcardFormModal({
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(form);
+  };
+
   return (
     <div className="fixed inset-0 bg-black/40  z-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg">
@@ -41,13 +46,7 @@ export default function FlashcardFormModal({
           {initialData ? "Edit Flashcard" : "Add New Flashcard"}{" "}
         </h2>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit(form);
-          }}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             name="verb"
             value={form.verb}
