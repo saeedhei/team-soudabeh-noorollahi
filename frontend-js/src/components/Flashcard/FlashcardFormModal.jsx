@@ -7,12 +7,26 @@ export default function FlashcardFormModal({
   initialData,
 }) {
   if (!isOpen) return null;
+
   const [form, setForm] = useState({
     verb: "",
     preposition: "",
     meaning: "",
     difficulty: "medium",
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        verb: initialData.verb || "",
+        preposition: initialData.preposition || "",
+        meaning: initialData.meaning || "",
+        difficulty: initialData.difficulty || "medium",
+      });
+    } else {
+      setForm({ verb: "", preposition: "", meaning: "", difficulty: "medium" });
+    }
+  }, [initialData, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
