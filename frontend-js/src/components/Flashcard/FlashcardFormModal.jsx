@@ -42,14 +42,13 @@ export default function FlashcardFormModal({
     <div className="fixed inset-0 bg-black/40  z-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg">
         <h2 className="text-lg font-semibold mb-4">
-          {" "}
           {initialData ? "Edit Flashcard" : "Add New Flashcard"}{" "}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             name="verb"
-            value={form.verb}
+            value={form.verb || ""}
             onChange={handleChange}
             placeholder="verb"
             className="w-full border px-3 py-2 rounded"

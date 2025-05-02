@@ -1,15 +1,13 @@
-// pages/Cards.jsx
-import { gql, useQuery } from "@apollo/client";
+import React, { useState } from "react";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
-import { DELETE_FLASHCARD } from "../graphql/mutations/cardMutations";
-
-import { useMutation } from "@apollo/client";
-import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 
 import {
   CREATE_FLASHCARD,
   UPDATE_FLASHCARD,
+  DELETE_FLASHCARD,
 } from "../graphql/mutations/cardMutations";
 
 // GraphQL query to fetch flashcards
@@ -38,13 +36,14 @@ const GET_CARDS = gql`
 //   }
 
 export default function Cards() {
-  const { loading, error, data } = useQuery(GET_CARDS);
+  const { loading, error, data, refetch } = useQuery(GET_CARDS);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCard, setEditingCard] = useState(null);
   const [createFlashcard] = useMutation(CREATE_FLASHCARD);
   const [updateFlashcard] = useMutation(UPDATE_FLASHCARD);
   const [deleteFlashcard] = useMutation(DELETE_FLASHCARD);
 
+  //handle form submission (add/edit)
   const handleFormSubmit = async (formData) => {
     try {
       if (editingCard) {
@@ -55,18 +54,23 @@ export default function Cards() {
             ...formData,
           },
         });
+        toast.success("Flashcard updated!"); // show toast
       } else {
         // CREATE
         await createFlashcard({
           variables: formData,
         });
+        toast.success("Flashcard added successfully!"); // sow toast
       }
+
+      await refetch();
       //Clearing and closing the modal
       setEditingCard(null);
       setModalOpen(false);
       refetch();
     } catch (error) {
       console.error("Submit error:", error);
+      toast.error("Something went wrong!"); // error toast
     }
   };
 
@@ -88,6 +92,7 @@ export default function Cards() {
       {/* Main Content */}
       <main className="p-8">
         <h2 className="text-2xl font-semibold mb-4">Flashcards</h2>
+        {/*  add new button */}
         <button
           onClick={() => {
             setModalOpen(true);
@@ -98,10 +103,8 @@ export default function Cards() {
           {" "}
           ➕ Add New Flashcard
         </button>
-
         {loading && <p className="text-gray-600">Loading flashcards...</p>}
         {error && <p className="text-red-500">Error: {error.message}</p>}
-
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {data?.cards?.map((card) => (
             <div key={card.id} className="bg-white p-4 rounded-lg shadow-md">
@@ -113,6 +116,7 @@ export default function Cards() {
                 <p>Difficulty: {card.difficulty || "N/A"}</p>
                 <p>Status: {card.status || "N/A"}</p>
               </div>
+              {/* edit + delete buttons */}
               <div className="flex gap-3 mt-3">
                 {" "}
                 <button
@@ -134,8 +138,10 @@ export default function Cards() {
                     try {
                       await deleteFlashcard({ variables: { id: card.id } });
                       refetch();
+                      toast.success("Flashcard deleted.");
                     } catch (err) {
                       console.error("Delete failed:", err);
+                      toast.error("Delete failed.");
                     }
                   }}
                   className="text-red-600 hover:underline text-sm"
@@ -146,15 +152,17 @@ export default function Cards() {
             </div>
           ))}
         </div>
-        <FlashcardFormModal
-          isOpen={modalOpen}
-          onClose={() => {
-            setModalOpen(false);
-            setEditingCard(null);
-          }}
-          onSubmit={handleFormSubmit}
-          initialData={editingCard}
-        />
+        {modalOpen && (
+          <FlashcardFormModal
+            isOpen={modalOpen}
+            onClose={() => {
+              setModalOpen(false);
+              setEditingCard(null);
+            }}
+            onSubmit={handleFormSubmit}
+            initialData={editingCard}
+          />
+        )}
       </main>
     </div>
   );
