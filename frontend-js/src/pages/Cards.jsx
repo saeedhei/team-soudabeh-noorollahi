@@ -3,6 +3,7 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
 import { toast } from "react-hot-toast";
+import SearchBar from "../components/Flashcard/SearchBar";
 
 import {
   CREATE_FLASHCARD,
@@ -42,6 +43,7 @@ export default function Cards() {
   const [createFlashcard] = useMutation(CREATE_FLASHCARD);
   const [updateFlashcard] = useMutation(UPDATE_FLASHCARD);
   const [deleteFlashcard] = useMutation(DELETE_FLASHCARD);
+  const [searchTerm, setSearchTerm] = useState("");
 
   //handle form submission (add/edit)
   const handleFormSubmit = async (formData) => {
@@ -74,6 +76,12 @@ export default function Cards() {
     }
   };
 
+  const filteredCards = data?.cards?.filter((card) => {
+    const text =
+      `${card.verb} ${card.preposition} ${card.meaning}`.toLowerCase();
+    return text.includes(searchTerm.toLowerCase());
+  });
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
@@ -92,6 +100,9 @@ export default function Cards() {
       {/* Main Content */}
       <main className="p-8">
         <h2 className="text-2xl font-semibold mb-4">Flashcards</h2>
+
+        <SearchBar onSearch={(term) => setSearchTerm(term)} />
+
         {/*  add new button */}
         <button
           onClick={() => {
@@ -106,7 +117,7 @@ export default function Cards() {
         {loading && <p className="text-gray-600">Loading flashcards...</p>}
         {error && <p className="text-red-500">Error: {error.message}</p>}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {data?.cards?.map((card) => (
+          {filteredCards?.map((card) => (
             <div key={card.id} className="bg-white p-4 rounded-lg shadow-md">
               <h3 className="text-lg font-bold text-blue-600">
                 {card.verb} {card.preposition}
