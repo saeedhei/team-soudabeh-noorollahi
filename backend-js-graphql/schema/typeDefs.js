@@ -12,9 +12,14 @@ const typeDefs = gql`
     updatedAt: String
   }
 
+  type FlashcardPageResult {
+    flashcards: [Flashcard!]!
+    total: Int!
+  }
+
   type Query {
-    cards: [Flashcard]
     getFlashcard(id: ID!): Flashcard
+    GetCards(page: Int!, limit: Int!): FlashcardPageResult
   }
 
   type Mutation {

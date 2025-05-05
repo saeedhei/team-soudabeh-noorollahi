@@ -1,48 +1,21 @@
 import React, { useState } from "react";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
 import { toast } from "react-hot-toast";
 import SearchBar from "../components/Flashcard/SearchBar";
+import PaginatedFlashcards from "../components/Flashcard/PaginatedFlashcards";
 
 import {
   CREATE_FLASHCARD,
   UPDATE_FLASHCARD,
-  DELETE_FLASHCARD,
 } from "../graphql/mutations/cardMutations";
 
-// GraphQL query to fetch flashcards
-const GET_CARDS = gql`
-  query GetCards {
-    cards {
-      id
-      verb
-      preposition
-      meaning
-      difficulty
-      status
-    }
-  }
-`;
-
-// query GetCards {
-//     cards {
-//      id
-//      verb
-//      preposition
-//      meaning
-//      difficulty
-//      status
-//     }
-//   }
-
 export default function Cards() {
-  const { loading, error, data, refetch } = useQuery(GET_CARDS);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCard, setEditingCard] = useState(null);
   const [createFlashcard] = useMutation(CREATE_FLASHCARD);
   const [updateFlashcard] = useMutation(UPDATE_FLASHCARD);
-  const [deleteFlashcard] = useMutation(DELETE_FLASHCARD);
   const [searchTerm, setSearchTerm] = useState("");
 
   //handle form submission (add/edit)
@@ -65,22 +38,14 @@ export default function Cards() {
         toast.success("Flashcard added successfully!"); // sow toast
       }
 
-      await refetch();
       //Clearing and closing the modal
       setEditingCard(null);
       setModalOpen(false);
-      refetch();
     } catch (error) {
       console.error("Submit error:", error);
       toast.error("Something went wrong!"); // error toast
     }
   };
-
-  const filteredCards = data?.cards?.filter((card) => {
-    const text =
-      `${card.verb} ${card.preposition} ${card.meaning}`.toLowerCase();
-    return text.includes(searchTerm.toLowerCase());
-  });
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -114,55 +79,15 @@ export default function Cards() {
           {" "}
           ➕ Add New Flashcard
         </button>
-        {loading && <p className="text-gray-600">Loading flashcards...</p>}
-        {error && <p className="text-red-500">Error: {error.message}</p>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {filteredCards?.map((card) => (
-            <div key={card.id} className="bg-white p-4 rounded-lg shadow-md">
-              <h3 className="text-lg font-bold text-blue-600">
-                {card.verb} {card.preposition}
-              </h3>
-              <p className="text-gray-700 mt-1">{card.meaning}</p>
-              <div className="text-sm text-gray-500 mt-2">
-                <p>Difficulty: {card.difficulty || "N/A"}</p>
-                <p>Status: {card.status || "N/A"}</p>
-              </div>
-              {/* edit + delete buttons */}
-              <div className="flex gap-3 mt-3">
-                {" "}
-                <button
-                  onClick={() => {
-                    setEditingCard(card);
-                    setModalOpen(true);
-                  }}
-                  className="text-blue-600 hover:underline text-sm"
-                >
-                  ✏️ Edit
-                </button>
-                <button
-                  onClick={async () => {
-                    const confirmed = window.confirm(
-                      "Are you sure you want to delete this flashcard?"
-                    );
-                    if (!confirmed) return;
 
-                    try {
-                      await deleteFlashcard({ variables: { id: card.id } });
-                      refetch();
-                      toast.success("Flashcard deleted.");
-                    } catch (err) {
-                      console.error("Delete failed:", err);
-                      toast.error("Delete failed.");
-                    }
-                  }}
-                  className="text-red-600 hover:underline text-sm"
-                >
-                  🗑️ Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Paginated List */}
+        <PaginatedFlashcards
+          searchTerm={searchTerm}
+          setEditingCard={setEditingCard}
+          setModalOpen={setModalOpen}
+          toast={toast}
+        />
+
         {modalOpen && (
           <FlashcardFormModal
             isOpen={modalOpen}
