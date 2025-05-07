@@ -70,7 +70,7 @@ function FlashcardList({ flashcards }) {
 
       setStatusCount((prev) => ({ ...prev, [status]: prev[status] + 1 }));
 
-      // go to next car
+      // go to next card
       if (currentIndex < flashcards.length - 1) {
         setIsFlipped(false); //Turn the card over
         setCurrentIndex((prevIndex) => prevIndex + 1);
