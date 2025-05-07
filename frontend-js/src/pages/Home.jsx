@@ -4,6 +4,8 @@ import { useQuery } from "@apollo/client";
 import { GET_CARDS } from "../graphql/queries/cardQueries";
 import FlashcardList from "../components/FlashcardList/FlashcardList";
 
+import { FaHome, FaBookOpen } from "react-icons/fa";
+
 export default function Home() {
   const [page] = useState(1);
   const limit = 20;
@@ -16,12 +18,18 @@ export default function Home() {
       {/* Navbar */}
       <nav className="bg-white shadow p-4 flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-800">DeutschVerben App</h1>
-        <div className="space-x-4">
-          <Link to="/" className="text-gray-700 hover:text-blue-500">
-            Home
+        <div className="space-x-4 flex items-center">
+          <Link
+            to="/"
+            className="text-gray-700 hover:text-blue-500 flex items-center"
+          >
+            <FaHome className="mr-2" /> Home
           </Link>
-          <Link to="/cards" className="text-gray-700 hover:text-blue-500">
-            Cards
+          <Link
+            to="/cards"
+            className="text-gray-700 hover:text-blue-500 flex items-center"
+          >
+            <FaBookOpen className="mr-2" /> Cards
           </Link>
         </div>
       </nav>
