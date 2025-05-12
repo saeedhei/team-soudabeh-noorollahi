@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation  } from "@apollo/client";
 import { GET_CARDS } from "../../graphql/queries/cardQueries";
 import { DELETE_FLASHCARD } from "../../graphql/mutations/cardMutations";
+
 
 export default function PaginatedFlashcards({
   searchTerm,
   setEditingCard,
   setModalOpen,
-  deleteFlashcard,
-  refetch,
+  // deleteFlashcard,
+  // refetch,
   toast,
 }) {
   const [page, setPage] = useState(1);
   const limit = 12;
 
+    const [deleteFlashcardMutation] = useMutation(DELETE_FLASHCARD);
   const { loading, error, data, fetchMore } = useQuery(GET_CARDS, {
     variables: { page, limit },
     notifyOnNetworkStatusChange: true,
@@ -48,40 +50,40 @@ export default function PaginatedFlashcards({
     setPage((prev) => prev + 1);
   };
 
-  const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this flashcard?"
-    );
-    if (!confirmed) return;
+ const handleDelete = async (id) => {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this flashcard?"
+  );
+  if (!confirmed) return;
 
-    try {
-      await deleteFlashcard({
-        variables: { id },
-        update: (cache) => {
-          cache.modify({
-            fields: {
-              GetCards(
-                existingData = { flashcards: [], total: 0 },
-                { readField }
-              ) {
-                return {
-                  ...existingData,
-                  flashcards: existingData.flashcards.filter(
-                    (fc) => readField("id", fc) !== id
-                  ),
-                  total: existingData.total - 1,
-                };
-              },
+  try {
+    await deleteFlashcardMutation({
+      variables: { id },
+      update: (cache) => {
+        cache.modify({
+          fields: {
+            GetCards(
+              existingData = { flashcards: [], total: 0 },
+              { readField }
+            ) {
+              return {
+                ...existingData,
+                flashcards: existingData.flashcards.filter(
+                  (fc) => readField("id", fc) !== id
+                ),
+                total: existingData.total - 1,
+              };
             },
-          });
-        },
-      });
-      toast.success("Flashcard deleted.");
-    } catch (err) {
-      console.error("Delete failed:", err);
-      toast.error("Delete failed.");
-    }
-  };
+          },
+        });
+      },
+    });
+    toast.success("Flashcard deleted.");
+  } catch (err) {
+    console.error("Delete failed:", err);
+    toast.error("Delete failed.");
+  }
+};
 
   return (
     <div>
@@ -106,26 +108,12 @@ export default function PaginatedFlashcards({
               >
                 ✏️ Edit
               </button>
-              <button
-                onClick={async () => {
-                  const confirmed = window.confirm(
-                    "Are you sure you want to delete this flashcard?"
-                  );
-                  if (!confirmed) return;
-
-                  try {
-                    await deleteFlashcard({ variables: { id: card.id } });
-                    await refetch();
-                    toast.success("Flashcard deleted.");
-                  } catch (err) {
-                    console.error("Delete failed:", err);
-                    toast.error("Delete failed.");
-                  }
-                }}
-                className="text-red-600 hover:underline text-sm"
-              >
-                🗑️ Delete
-              </button>
+          <button
+            onClick={() => handleDelete(card.id)}
+            className="text-red-600 hover:underline text-sm"
+          >
+            🗑️ Delete
+          </button>
             </div>
           </li>
         ))}
