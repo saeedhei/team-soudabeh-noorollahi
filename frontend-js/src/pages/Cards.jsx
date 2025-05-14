@@ -35,6 +35,9 @@ export default function Cards() {
             ...formData,
           },
         });
+
+        await refetch();//Refresh the data after editing the card.
+
         toast.success("Flashcard updated!"); // show toast
       } else {
         // CREATE
