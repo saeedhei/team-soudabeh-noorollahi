@@ -5,7 +5,7 @@ export default function SearchBar({ onSearch, delay = 300 }) {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      onSearch(input);
+      onSearch(input.trim());
     }, delay);
 
     return () => clearTimeout(timeout);

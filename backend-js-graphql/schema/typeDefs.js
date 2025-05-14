@@ -20,6 +20,7 @@ const typeDefs = gql`
   type Query {
     getFlashcard(id: ID!): Flashcard
     GetCards(page: Int!, limit: Int!): FlashcardPageResult
+    searchFlashcards(term: String!): [Flashcard!]!
   }
 
   type Mutation {

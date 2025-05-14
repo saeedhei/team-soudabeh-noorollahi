@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useQuery, useMutation  } from "@apollo/client";
-import { GET_CARDS } from "../../graphql/queries/cardQueries";
+import React, { useEffect, useState } from "react";
+import {useLazyQuery, useQuery, useMutation  } from "@apollo/client";
+import { GET_CARDS, SEARCH_FLASHCARDS } from "../../graphql/queries/cardQueries";
 import { DELETE_FLASHCARD } from "../../graphql/mutations/cardMutations";
 
 
@@ -8,27 +8,30 @@ export default function PaginatedFlashcards({
   searchTerm,
   setEditingCard,
   setModalOpen,
-  // deleteFlashcard,
-  // refetch,
   toast,
 }) {
   const [page, setPage] = useState(1);
   const limit = 12;
-
-    const [deleteFlashcardMutation] = useMutation(DELETE_FLASHCARD);
-  const { loading, error, data, fetchMore } = useQuery(GET_CARDS, {
+  
+  const { loading, error, data, fetchMore , refetch } = useQuery(GET_CARDS, {
     variables: { page, limit },
     notifyOnNetworkStatusChange: true,
   });
 
-  const flashcards = data?.GetCards?.flashcards || [];
+  const [runSearch, { data: searchData, loading: searchLoading }] = useLazyQuery(
+    SEARCH_FLASHCARDS
+  );
+
+  useEffect(() => {
+    if (searchTerm.trim().length < 1) return;
+    runSearch({ variables: { term: searchTerm } });
+  }, [searchTerm, runSearch]);
+
+  const flashcards = searchTerm.trim() ? searchData?.searchFlashcards || [] : data?.GetCards?.flashcards || [];
+  
   const total = data?.GetCards?.total || 0;
 
-  const filtered = flashcards.filter((card) => {
-    const text =
-      `${card.verb} ${card.preposition} ${card.meaning}`.toLowerCase();
-    return text.includes(searchTerm.toLowerCase());
-  });
+  const [deleteFlashcardMutation] = useMutation(DELETE_FLASHCARD);
 
   const handleLoadMore = () => {
     fetchMore({
@@ -79,6 +82,7 @@ export default function PaginatedFlashcards({
       },
     });
     toast.success("Flashcard deleted.");
+    await refetch();
   } catch (err) {
     console.error("Delete failed:", err);
     toast.error("Delete failed.");
@@ -89,11 +93,13 @@ export default function PaginatedFlashcards({
     <div>
       <h3 className="text-xl font-semibold mb-4">Paginated Flashcards</h3>
 
+
+      {searchLoading && <p>Searching...</p>}
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error loading cards</p>}
 
       <ul className="space-y-2">
-        {filtered.map((card) => (
+        {flashcards.map((card) => (
           <li key={card.id} className="bg-white border p-4 rounded shadow">
             <strong className="text-blue-600">{card.verb}</strong>{" "}
             {card.preposition} - {card.meaning}
@@ -119,7 +125,7 @@ export default function PaginatedFlashcards({
         ))}
       </ul>
 
-      {flashcards.length < total && (
+      {searchTerm.trim() === "" && flashcards.length < total && (
         <div className="text-center mt-6">
           <button
             onClick={handleLoadMore}

@@ -2,10 +2,12 @@ import Flashcard from "../models/Flashcard.js";
 
 const resolvers = {
   Query: {
+
     // Get a single flashcard
     getFlashcard: async (_, { id }) => {
       return await Flashcard.findById(id);
     },
+
     // Get flashcards with pagination
     GetCards: async (_, { page, limit }) => {
       const skip = (page - 1) * limit;
@@ -13,7 +15,22 @@ const resolvers = {
       const total = await Flashcard.countDocuments();
       return { flashcards, total };
     },
+
+        //  Search flashcards
+    searchFlashcards: async (_, { term }) => {
+      const regex = new RegExp(term, "i"); // case-insensitive
+      return await Flashcard.find({
+        $or: [
+          { verb: regex },
+          { preposition: regex },
+          { meaning: regex }
+        ]
+      });
+    },
+
   },
+
+
   Mutation: {
     // Create new flashcard
     createFlashcard: async (_, { verb, preposition, meaning, difficulty }) => {
