@@ -6,8 +6,7 @@ export default function FlashcardFormModal({
   onSubmit,
   initialData,
 }) {
-  if (!isOpen) return null;
-
+ 
   const [form, setForm] = useState({
     verb: "",
     preposition: "",
@@ -37,6 +36,8 @@ export default function FlashcardFormModal({
     e.preventDefault();
     onSubmit(form);
   };
+
+   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/40  z-50 flex items-center justify-center">

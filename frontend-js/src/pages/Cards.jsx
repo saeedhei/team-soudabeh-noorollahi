@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import {useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
 import { toast } from "react-hot-toast";
 import SearchBar from "../components/Flashcard/SearchBar";
 import PaginatedFlashcards from "../components/Flashcard/PaginatedFlashcards";
+import { GET_CARDS } from "../graphql/queries/cardQueries";
 
 import {
   CREATE_FLASHCARD,
@@ -17,6 +18,11 @@ export default function Cards() {
   const [createFlashcard] = useMutation(CREATE_FLASHCARD);
   const [updateFlashcard] = useMutation(UPDATE_FLASHCARD);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const {  refetch } = useQuery(GET_CARDS, {
+  variables: { page: 1, limit: 12 },
+});
+
 
   //handle form submission (add/edit)
   const handleFormSubmit = async (formData) => {
@@ -35,6 +41,9 @@ export default function Cards() {
         await createFlashcard({
           variables: formData,
         });
+
+        await refetch();//Refresh the data after adding the card.
+        
         toast.success("Flashcard added successfully!"); // sow toast
       }
 
@@ -86,6 +95,7 @@ export default function Cards() {
           setEditingCard={setEditingCard}
           setModalOpen={setModalOpen}
           toast={toast}
+          refetch={refetch}
         />
 
         {modalOpen && (
