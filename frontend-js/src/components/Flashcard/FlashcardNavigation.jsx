@@ -1,6 +1,6 @@
 import React from "react";
 
-function FlashcardNavigation({ handleReset, currentIndex, total }) {
+function FlashcardNavigation({ handleReset }) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-md">
       {/* Start Again Button */}

@@ -9,7 +9,7 @@ const resolvers = {
     // Get flashcards with pagination
     GetCards: async (_, { page, limit }) => {
       const skip = (page - 1) * limit;
-      const flashcards = await Flashcard.find().skip(skip).limit(limit);
+      const flashcards = await Flashcard.find().sort({ createdAt: -1 }).skip(skip).limit(limit);
       const total = await Flashcard.countDocuments();
       return { flashcards, total };
     },
