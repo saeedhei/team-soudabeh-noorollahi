@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {useLazyQuery, useQuery, useMutation  } from "@apollo/client";
 import { GET_CARDS, SEARCH_FLASHCARDS } from "../../graphql/queries/cardQueries";
 import { DELETE_FLASHCARD } from "../../graphql/mutations/cardMutations";
@@ -10,7 +10,7 @@ export default function PaginatedFlashcards({
   setModalOpen,
   toast,
 }) {
-  const [page, setPage] = useState(1);
+  const [page , setPage] = useState(1);
   const limit = 12;
   
   const { loading, error, data, fetchMore , refetch } = useQuery(GET_CARDS, {
@@ -103,6 +103,18 @@ export default function PaginatedFlashcards({
           <li key={card.id} className="bg-white border p-4 rounded shadow">
             <strong className="text-blue-600">{card.verb}</strong>{" "}
             {card.preposition} - {card.meaning}
+
+             
+              <p className={`text-sm mt-1 font-medium ${
+    card.difficulty === "easy"
+      ? "text-green-600"
+      : card.difficulty === "medium"
+      ? "text-yellow-600"
+      : "text-red-600"
+  }`}>
+    Difficulty: {card.difficulty}
+  </p>
+
             <div className="flex gap-2 mt-2">
               {" "}
               <button
