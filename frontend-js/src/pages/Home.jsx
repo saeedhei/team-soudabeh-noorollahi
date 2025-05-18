@@ -17,7 +17,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
       <nav className="bg-white shadow p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-800">DeutschVerben App</h1>
+        <h1 className="text-xl font-bold text-gray-800">VerbPro C1</h1>
         <div className="space-x-4 flex items-center">
           <Link
             to="/"
