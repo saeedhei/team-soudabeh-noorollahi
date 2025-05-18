@@ -4,7 +4,6 @@ import Flashcard from "../Flashcard/Flashcard";
 import FlashcardNavigation from "../Flashcard/FlashcardNavigation";
 import ProgressStats from "../Flashcard/ProgressStats";
 import { useMutation } from "@apollo/client";
-import SessionEndOptions from "../Flashcard/SessionEndOptions";
 
 function FlashcardList({ flashcards }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -76,24 +75,13 @@ function FlashcardList({ flashcards }) {
         setIsFlipped(false); //Turn the card over
         setCurrentIndex((prevIndex) => prevIndex + 1);
       } else {
-        setIsFlipped(false);
-        setCurrentIndex((prevIndex) => prevIndex + 1);
+        alert("You've completed all cards! 🎉");
+        handleReset(); // Reset cards
       }
     } catch (error) {
       console.error("Update failed", error);
     }
   };
-
-  if (currentIndex >= flashcards.length) {
-    return (
-      <SessionEndOptions
-        total={flashcards.length}
-        onRestart={handleReset}
-        onNextSet={() => {}}
-        onReviewIncorrect={() => {}}
-      />
-    );
-  }
 
   const currentFlashcard = flashcards[currentIndex];
 
