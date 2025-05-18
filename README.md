@@ -1,4 +1,4 @@
-# Project Name: DeutschVerben-C1
+# Project Name: VerbPro C1
 
 ## 📌 Description
 
