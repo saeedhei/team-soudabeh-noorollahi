@@ -21,6 +21,7 @@ const typeDefs = gql`
     getFlashcard(id: ID!): Flashcard
     GetCards(page: Int!, limit: Int!): FlashcardPageResult
     searchFlashcards(term: String!): [Flashcard!]!
+    getAllFlashcards: [Flashcard!]
   }
 
   type Mutation {

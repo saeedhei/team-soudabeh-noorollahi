@@ -28,6 +28,10 @@ const resolvers = {
       });
     },
 
+    getAllFlashcards : async() => {
+      return await Flashcard.find().sort({ _id: -1 })
+    }
+
   },
 
 
