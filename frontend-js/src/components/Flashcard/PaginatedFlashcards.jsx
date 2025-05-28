@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
+import { AiOutlinePlus} from "react-icons/ai";
+import { MdFirstPage } from "react-icons/md";
+
 import {
   GET_CARDS,
   SEARCH_FLASHCARDS,
@@ -13,6 +16,7 @@ export default function PaginatedFlashcards({
   toast,
 }) {
   const [page, setPage] = useState(1);
+  const [allLoaded, setAllLoaded] = useState(false);
   const limit = 12;
 
   const { loading, error, data, fetchMore, refetch } = useQuery(GET_CARDS, {
@@ -52,6 +56,11 @@ export default function PaginatedFlashcards({
         const uniqueMap = new Map();
         for (const card of combined) {
           uniqueMap.set(card.id, card);
+        }
+
+        const newFlashcards = Array.from(uniqueMap.values());
+        if (newFlashcards.length >= fetchMoreResult.GetCards.total) {
+          setAllLoaded(true);
         }
 
         return {
@@ -102,6 +111,12 @@ export default function PaginatedFlashcards({
     }
   };
 
+  useEffect(() => {
+    if (!searchTerm.trim() && flashcards.length >= total) {
+      setAllLoaded(true);
+    }
+  }, [flashcards.length, total, searchTerm]);
+
   return (
     <div>
       <h3 className="text-xl font-semibold mb-4">Paginated Flashcards</h3>
@@ -148,16 +163,29 @@ export default function PaginatedFlashcards({
         ))}
       </ul>
 
-      {searchTerm.trim() === "" && flashcards.length < total && (
-        <div className="text-center mt-6">
+      <div className="text-center mt-6">
+        {searchTerm.trim() !== "" ? null : !allLoaded ? (
           <button
             onClick={handleLoadMore}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className=" flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mx-auto"
           >
+            <AiOutlinePlus />
             Load More
           </button>
-        </div>
-      )}
+        ) : page > 1 ? (
+          <button
+            onClick={() => {
+              setPage(1);
+              setAllLoaded(false);
+              refetch({ page: 1, limit });
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 mx-auto"
+          >
+            <MdFirstPage/>
+            First Page
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }
