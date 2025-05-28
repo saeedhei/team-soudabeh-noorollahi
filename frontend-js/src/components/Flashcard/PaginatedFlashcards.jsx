@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
+import { AiOutlinePlus} from "react-icons/ai";
+import { MdFirstPage } from "react-icons/md";
+
 import {
   GET_CARDS,
   SEARCH_FLASHCARDS,
@@ -164,8 +167,9 @@ export default function PaginatedFlashcards({
         {searchTerm.trim() !== "" ? null : !allLoaded ? (
           <button
             onClick={handleLoadMore}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className=" flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mx-auto"
           >
+            <AiOutlinePlus />
             Load More
           </button>
         ) : page > 1 ? (
@@ -175,13 +179,13 @@ export default function PaginatedFlashcards({
               setAllLoaded(false);
               refetch({ page: 1, limit });
             }}
-            className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 mx-auto"
           >
-            Back to First Page
+            <MdFirstPage/>
+            First Page
           </button>
-        ) : null }
+        ) : null}
       </div>
     </div>
   );
 }
-
