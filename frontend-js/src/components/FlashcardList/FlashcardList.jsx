@@ -70,6 +70,8 @@ function FlashcardList() {
       // Refetch after mutation to get updated data
       await refetch();
 
+      // console.log("✅ Refetched Data:", flashcards.map((f) => ({ id: f.id, status: f.status })));
+
       // After refreshing, we move on to the next card.
       if (currentIndex < flashcards.length - 1) {
         setIsFlipped(false);
