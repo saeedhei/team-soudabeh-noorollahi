@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import {useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
 import { toast } from "react-hot-toast";
 import SearchBar from "../components/Flashcard/SearchBar";
 import PaginatedFlashcards from "../components/Flashcard/PaginatedFlashcards";
 import { GET_CARDS } from "../graphql/queries/cardQueries";
+
+import { FaHome, FaBookOpen } from "react-icons/fa";
 
 import {
   CREATE_FLASHCARD,
@@ -19,10 +21,9 @@ export default function Cards() {
   const [updateFlashcard] = useMutation(UPDATE_FLASHCARD);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const {  refetch } = useQuery(GET_CARDS, {
-  variables: { page: 1, limit: 12 },
-});
-
+  const { refetch } = useQuery(GET_CARDS, {
+    variables: { page: 1, limit: 12 },
+  });
 
   //handle form submission (add/edit)
   const handleFormSubmit = async (formData) => {
@@ -36,7 +37,7 @@ export default function Cards() {
           },
         });
 
-        await refetch();//Refresh the data after editing the card.
+        await refetch(); //Refresh the data after editing the card.
 
         toast.success("Flashcard updated!"); // show toast
       } else {
@@ -45,8 +46,8 @@ export default function Cards() {
           variables: formData,
         });
 
-        await refetch();//Refresh the data after adding the card.
-        
+        await refetch(); //Refresh the data after adding the card.
+
         toast.success("Flashcard added successfully!"); // sow toast
       }
 
@@ -60,16 +61,14 @@ export default function Cards() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="mx-auto overflow-x-hidden xl:max-w-[1380px] bg-gradient-to-br from-stone-100">
       {/* Navbar */}
       <nav className="bg-white shadow p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-800">VerbPro C1</h1>
+        <h1 className="text-2xl font-bold text-cyan-800">VerbPro C1</h1>
         <div className="space-x-4">
-          <Link to="/" className="text-gray-700 hover:text-blue-500">
+          <Link to="/" className="text-xl font-bold  text-cyan-700 hover:text-gray-700 flex items-center">
+            <FaHome className="mr-2" />
             Home
-          </Link>
-          <Link to="/cards" className="text-gray-700 hover:text-blue-500">
-            Cards
           </Link>
         </div>
       </nav>
@@ -86,7 +85,7 @@ export default function Cards() {
             setModalOpen(true);
             setEditingCard(null);
           }}
-          className="mb-4 px-4 py-2 bg-cyan-600 text-white rounded hover:bg-green-700"
+          className="mb-4 px-4 py-2 bg-cyan-700 text-white rounded hover:bg-cyan-600 cursor-pointer"
         >
           {" "}
           ➕ Add New Flashcard

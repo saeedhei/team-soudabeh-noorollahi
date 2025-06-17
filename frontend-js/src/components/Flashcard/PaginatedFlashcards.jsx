@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
-import { AiOutlinePlus} from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import { MdFirstPage } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 import {
   GET_CARDS,
@@ -119,16 +120,17 @@ export default function PaginatedFlashcards({
 
   return (
     <div>
-      <h3 className="text-xl font-semibold mb-4">Paginated Flashcards</h3>
-
       {searchLoading && <p>Searching...</p>}
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error loading cards</p>}
 
-      <ul className="space-y-2">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {flashcards.map((card) => (
-          <li key={card.id} className="bg-white border p-4 rounded shadow">
-            <strong className="text-blue-600">{card.verb}</strong>{" "}
+          <li
+            key={card.id}
+            className="bg-white text-xl border p-4 rounded shadow hover:border-2 hover:border-amber-600 hover:bg-neutral-100"
+          >
+            <strong className="text-cyan-700">{card.verb}</strong>{" "}
             {card.preposition} - {card.meaning}
             <p
               className={`text-sm mt-1 font-medium ${
@@ -141,22 +143,22 @@ export default function PaginatedFlashcards({
             >
               Difficulty: {card.difficulty}
             </p>
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2 mt-2 justify-center">
               {" "}
               <button
                 onClick={() => {
                   setEditingCard(card);
                   setModalOpen(true);
                 }}
-                className="text-blue-600 hover:underline text-sm"
+                className="text-stone-600 hover:text-emerald-600 bg-white rounded-full p-3 shadow-sm hover:shadow-md transition-all cursor-pointer"
               >
-                ✏️ Edit
+                <MdEdit size={20} />
               </button>
               <button
                 onClick={() => handleDelete(card.id)}
-                className="text-red-600 hover:underline text-sm"
+                className="text-stone-600 hover:text-red-600 bg-white rounded-full p-3 shadow-sm hover:shadow-md transition-all cursor-pointer"
               >
-                🗑️ Delete
+                <MdDelete size={20} />
               </button>
             </div>
           </li>
@@ -167,7 +169,7 @@ export default function PaginatedFlashcards({
         {searchTerm.trim() !== "" ? null : !allLoaded ? (
           <button
             onClick={handleLoadMore}
-            className=" flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mx-auto"
+            className=" flex items-center gap-2 px-4 py-2 bg-cyan-700 text-white rounded hover:bg-cyan-600 mx-auto"
           >
             <AiOutlinePlus />
             Load More
@@ -179,9 +181,9 @@ export default function PaginatedFlashcards({
               setAllLoaded(false);
               refetch({ page: 1, limit });
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 mx-auto"
+            className="flex items-center gap-2 px-4 py-2 bg-cyan-700 text-white rounded hover:bg-cyan-500 mx-auto"
           >
-            <MdFirstPage/>
+            <MdFirstPage />
             First Page
           </button>
         ) : null}
