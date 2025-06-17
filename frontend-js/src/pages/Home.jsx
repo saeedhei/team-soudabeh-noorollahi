@@ -11,20 +11,20 @@ export default function Home() {
   console.log("✅ Total cards in Home:", data?.getAllFlashcards?.length);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="mx-auto overflow-x-hidden xl:max-w-[1380px] bg-gradient-to-b from-neutral-100">
       {/* Navbar */}
       <nav className="bg-white shadow p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-800">VerbPro C1</h1>
+        <h1 className="text-2xl font-bold text-cyan-800">VerbPro C1</h1>
         <div className="space-x-4 flex items-center">
           <Link
             to="/"
-            className="text-gray-700 hover:text-blue-500 flex items-center"
+            className="text-xl font-bold  text-cyan-700 hover:text-gray-700 flex items-center"
           >
             <FaHome className="mr-2" /> Home
           </Link>
           <Link
             to="/cards"
-            className="text-gray-700 hover:text-blue-500 flex items-center"
+            className="text-xl font-bold  text-cyan-700 hover:text-gray-700 flex items-center"
           >
             <FaBookOpen className="mr-2" /> Cards
           </Link>
