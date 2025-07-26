@@ -1,5 +1,11 @@
 # Git Command Cheat Sheet
 
+```bash
+git add .
+git commit -m "updated"
+git push origin main
+```
+
 ## 🛠️ Setup & Configuration
 
 ```bash
