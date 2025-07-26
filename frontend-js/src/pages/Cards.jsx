@@ -74,7 +74,7 @@ export default function Cards() {
       </nav>
 
       {/* Main Content */}
-      <main className="p-8">
+      <main className="p-8 min-h-screen">
         <h2 className="text-2xl font-semibold mb-4">Flashcards</h2>
 
         <SearchBar onSearch={(term) => setSearchTerm(term)} />

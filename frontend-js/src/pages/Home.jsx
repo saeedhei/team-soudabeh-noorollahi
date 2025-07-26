@@ -11,39 +11,55 @@ export default function Home() {
   console.log("✅ Total cards in Home:", data?.getAllFlashcards?.length);
 
   return (
-    <div className="mx-auto overflow-x-hidden xl:max-w-[1380px] bg-gradient-to-b from-neutral-100">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 font-sans text-gray-800">
       {/* Navbar */}
-      <nav className="bg-white shadow p-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-cyan-800">VerbPro C1</h1>
-        <div className="space-x-4 flex items-center">
+      <nav className="bg-white shadow-md p-4 flex justify-between items-center z-10">
+        <h1 className="text-3xl font-extrabold text-indigo-700 tracking-tight">
+          VerbPro C1
+        </h1>
+        <div className="space-x-6 flex items-center">
           <Link
             to="/"
-            className="text-xl font-bold  text-cyan-700 hover:text-gray-700 flex items-center"
+            className="text-lg font-medium text-gray-600 hover:text-indigo-700 transition duration-300 ease-in-out flex items-center"
           >
-            <FaHome className="mr-2" /> Home
+            <FaHome className="mr-2 text-xl" /> Home
           </Link>
           <Link
             to="/cards"
-            className="text-xl font-bold  text-cyan-700 hover:text-gray-700 flex items-center"
+            className="text-lg font-medium text-gray-600 hover:text-indigo-700 transition duration-300 ease-in-out flex items-center"
           >
-            <FaBookOpen className="mr-2" /> Cards
+            <FaBookOpen className="mr-2 text-xl" /> Cards
           </Link>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="p-8">
-        <h2 className="text-2xl font-semibold">Welcome Home</h2>
-        <p className="mt-2 text-gray-600">
-          Use the menu to navigate to the Cards page.
-        </p>
-
-        <div className="container mx-auto px-4 py-8">
-          {loading && <p>Loading...</p>}
-          {error && <p>Error: {error.message}</p>}
-          {data && <FlashcardList flashcards={data.getAllFlashcards} />}
+      <main className="flex-grow p-8">
+        <div className="container mx-auto px-4 py-8 bg-white/80 backdrop-blur-sm rounded-lg shadow-xl">
+          {loading && (
+            <p className="text-center text-lg text-indigo-600">Loading flashcards...</p>
+          )}
+          {error && (
+            <p className="text-center text-lg text-red-600">
+              Error: {error.message}. Please try again later.
+            </p>
+          )}
+          {data && data.getAllFlashcards.length === 0 && (
+            <p className="text-center text-lg text-gray-600">
+              No flashcards found. Time to add some!
+            </p>
+          )}
+          {data && data.getAllFlashcards.length > 0 && (
+            <FlashcardList flashcards={data.getAllFlashcards} />
+          )}
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white p-4 text-center text-sm">
+        <p>&copy; {new Date().getFullYear()} VerbPro C1. All rights reserved.</p>
+        <p className="mt-1">Designed with <span className="text-red-400">&hearts;</span> for language learners.</p>
+      </footer>
     </div>
   );
 }
