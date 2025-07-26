@@ -35,7 +35,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex-grow p-8">
-        <div className="container mx-auto px-4 py-8 bg-white/80 backdrop-blur-sm rounded-lg shadow-xl">
+        <div className="container mx-auto px-4 py-8">
           {loading && (
             <p className="text-center text-lg text-indigo-600">Loading flashcards...</p>
           )}
