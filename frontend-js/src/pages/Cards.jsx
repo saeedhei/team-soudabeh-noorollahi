@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
@@ -62,17 +62,6 @@ export default function Cards() {
 
   return (
     <div className="mx-auto overflow-x-hidden xl:max-w-[1380px] bg-gradient-to-br from-stone-100">
-      {/* Navbar */}
-      <nav className="bg-white shadow p-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-cyan-800">VerbPro C1</h1>
-        <div className="space-x-4">
-          <Link to="/" className="text-xl font-bold  text-cyan-700 hover:text-gray-700 flex items-center">
-            <FaHome className="mr-2" />
-            Home
-          </Link>
-        </div>
-      </nav>
-
       {/* Main Content */}
       <main className="p-8 min-h-screen">
         <h2 className="text-2xl font-semibold mb-4">Flashcards</h2>
