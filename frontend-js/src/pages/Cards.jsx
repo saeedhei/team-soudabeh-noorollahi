@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+
 import FlashcardFormModal from "../components/Flashcard/FlashcardFormModal";
 import { toast } from "react-hot-toast";
 import SearchBar from "../components/Flashcard/SearchBar";
 import PaginatedFlashcards from "../components/Flashcard/PaginatedFlashcards";
 import { GET_CARDS } from "../graphql/queries/cardQueries";
-
-import { FaHome, FaBookOpen } from "react-icons/fa";
 
 import {
   CREATE_FLASHCARD,
