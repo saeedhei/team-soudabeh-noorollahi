@@ -59,7 +59,7 @@ export default function Cards() {
   };
 
   return (
-    <div className="mx-auto overflow-x-hidden xl:max-w-[1380px] bg-gradient-to-br from-stone-100">
+    <div className="mx-auto overflow-x-hidden xl:max-w-[1380px] ">
       {/* Main Content */}
       <main className="p-8 min-h-screen">
         <h2 className="text-2xl font-semibold mb-4">Flashcards</h2>

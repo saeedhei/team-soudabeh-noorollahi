@@ -7,8 +7,11 @@ function Header() {
   const location = useLocation();
 
   return (
-    <header className="bg-gradient-to-b from-gray-100 to-white border-t backdrop-blur-md shadow-sm sticky top-0 z-30 w-full border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <header className="sticky top-0 z-30 w-full">
+      <div
+        className="max-w-[1600px] mx-auto px-4 py-3 flex justify-between items-center 
+                      bg-gradient-to-b from-gray-100 to-white border-b border-gray-200 shadow-sm backdrop-blur-md rounded-b-md"
+      >
         {/* Logo */}
         <Link to="/">
           <img

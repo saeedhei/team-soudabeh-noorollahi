@@ -8,8 +8,8 @@ export default function Home() {
   console.log("✅ Total cards in Home:", data?.getAllFlashcards?.length);
 
   return (
-    <main className="flex-grow p-8">
-      <div className="container mx-auto px-4 py-8">
+    <main className="flex-grow px-4 py-8">
+      <div className="max-w-screen-xl mx-auto">
         {loading && (
           <p className="text-center text-lg text-indigo-600">
             Loading flashcards...
