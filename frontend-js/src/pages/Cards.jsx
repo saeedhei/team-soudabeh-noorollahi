@@ -80,6 +80,7 @@ export default function Cards() {
 
         {/* Paginated List */}
         <PaginatedFlashcards
+          status={status}
           searchTerm={searchTerm}
           setEditingCard={setEditingCard}
           setModalOpen={setModalOpen}
