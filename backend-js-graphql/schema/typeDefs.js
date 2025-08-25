@@ -1,6 +1,12 @@
 import { gql } from "graphql-tag";
 
 const typeDefs = gql`
+  enum StatusEnum {
+    KNOWN
+    ALMOST
+    UNKNOWN
+  }
+
   type Flashcard {
     id: ID!
     verb: String!
@@ -19,7 +25,7 @@ const typeDefs = gql`
 
   type Query {
     getFlashcard(id: ID!): Flashcard
-    GetCards(page: Int!, limit: Int!): FlashcardPageResult
+    GetCards(page: Int!, limit: Int!, status: StatusEnum): FlashcardPageResult
     searchFlashcards(term: String!): [Flashcard!]!
     getAllFlashcards: [Flashcard!]
   }
