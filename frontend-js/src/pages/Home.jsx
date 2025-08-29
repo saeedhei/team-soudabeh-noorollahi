@@ -1,15 +1,40 @@
+import { useState, useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_CARDS } from "../graphql/queries/cardQueries";
 import FlashcardList from "../components/FlashcardList/FlashcardList";
+import StatusFilter from "../components/Flashcard/StatusFilter";
+
+const normalize = (s) => (s || "").toUpperCase();
 
 export default function Home() {
-  const { loading, error, data } = useQuery(GET_ALL_CARDS);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_CARDS);
+  const [activeStatus, setActiveStatus] = useState("ALL");
 
-  console.log("✅ Total cards in Home:", data?.getAllFlashcards?.length);
+  const cards = useMemo(() => data?.getAllFlashcards ?? [], [data]);
+
+  const counts = useMemo(() => {
+    const known = cards.filter((c) => normalize(c.status) === "KNOWN").length;
+    const almost = cards.filter((c) => normalize(c.status) === "ALMOST").length;
+    const unknown = cards.filter(
+      (c) => normalize(c.status) === "UNKNOWN"
+    ).length;
+    return { all: cards.length, known, almost, unknown };
+  }, [cards]);
+
+  const filtered = useMemo(() => {
+    if (activeStatus === "ALL") return cards;
+    return cards.filter((c) => normalize(c.status) === activeStatus);
+  }, [activeStatus, cards]);
 
   return (
     <main className="flex-grow px-4 py-8">
       <div className="max-w-screen-xl mx-auto">
+        <StatusFilter
+          active={activeStatus}
+          counts={counts}
+          onChange={setActiveStatus}
+        />
+
         {loading && (
           <p className="text-center text-lg text-indigo-600">
             Loading flashcards...
@@ -20,13 +45,15 @@ export default function Home() {
             Error: {error.message}. Please try again later.
           </p>
         )}
-        {data && data.getAllFlashcards.length === 0 && (
+
+        {!loading && !error && filtered.length === 0 && (
           <p className="text-center text-lg text-gray-600">
-            No flashcards found. Time to add some!
+            No cards in this category.
           </p>
         )}
-        {data && data.getAllFlashcards.length > 0 && (
-          <FlashcardList flashcards={data.getAllFlashcards} />
+
+        {!loading && !error && filtered.length > 0 && (
+          <FlashcardList cards={filtered} onRefetch={refetch} />
         )}
       </div>
     </main>
