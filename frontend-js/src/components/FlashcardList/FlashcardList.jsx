@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_CARDS } from "../../graphql/queries/cardQueries";
+import React, { useMemo, useState } from "react";
+import { useMutation } from "@apollo/client";
 import { UPDATE_FLASHCARD_STATUS } from "../../graphql/mutations/cardMutations";
 import Flashcard from "../Flashcard/Flashcard";
 import FlashcardNavigation from "../Flashcard/FlashcardNavigation";
@@ -12,27 +11,11 @@ const normalize = (s) =>
     .toLowerCase();
 
 function FlashcardList({ cards: cardsProp, onRefetch }) {
-  // Fallback query only if no cards are provided from parent
-  const { loading, error, data, refetch } = useQuery(GET_ALL_CARDS, {
-    skip: Array.isArray(cardsProp), // don't fetch if parent provides data
-  });
-
-  const { getAllFlashcards = [] } = data ?? {};
-  const cards = useMemo(
-    () => (Array.isArray(cardsProp) ? cardsProp : getAllFlashcards),
-    [cardsProp, getAllFlashcards]
-  );
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-
   const [updateFlashcardStatus] = useMutation(UPDATE_FLASHCARD_STATUS);
 
-  // When the incoming list changes (e.g., switching category), reset the player
-  useEffect(() => {
-    setCurrentIndex(0);
-    setIsFlipped(false);
-  }, [cards]);
+  const cards = useMemo(() => cardsProp, [cardsProp]);
 
   // Counting categories by status (based on the *current working list*)
   const statusCount = useMemo(() => {
@@ -42,12 +25,6 @@ function FlashcardList({ cards: cardsProp, onRefetch }) {
       unknown: cards.filter((c) => normalize(c.status) === "unknown").length,
     };
   }, [cards]);
-
-  if (!Array.isArray(cardsProp)) {
-    // We're in "self-fetch" mode, so show loading/error for the query
-    if (loading) return <p>Loading flashcards...</p>;
-    if (error) return <p>Error loading flashcards!</p>;
-  }
 
   const handleNext = () => {
     if (currentIndex < cards.length - 1) {
@@ -74,6 +51,7 @@ function FlashcardList({ cards: cardsProp, onRefetch }) {
     const statusMap = { 0: "known", 1: "almost", 2: "unknown" };
     const status = statusMap[statusCode];
     const currentFlashcard = cards[currentIndex];
+
     if (!currentFlashcard) return;
 
     try {
@@ -84,8 +62,6 @@ function FlashcardList({ cards: cardsProp, onRefetch }) {
       // Refetch: prefer parent refetch if provided; else fallback to local
       if (onRefetch) {
         await onRefetch();
-      } else {
-        await refetch?.();
       }
 
       // Move forward if possible (use the current list length)
@@ -94,18 +70,13 @@ function FlashcardList({ cards: cardsProp, onRefetch }) {
         const next = i + 1;
         return next < cards.length ? next : 0;
       });
-    } catch (err) {
-      console.error("Update failed", err);
+    } catch (error) {
+      console.error("Error updating flashcard status", error);
+      alert("There was an error updating the card status. Please try again.");
     }
   };
 
   const currentFlashcard = cards[currentIndex];
-
-  if (!cards.length) {
-    return (
-      <p className="text-center text-lg text-gray-600">No cards to show.</p>
-    );
-  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh]">
@@ -116,6 +87,7 @@ function FlashcardList({ cards: cardsProp, onRefetch }) {
       />
 
       <Flashcard
+        key={currentFlashcard.id}
         flashcard={currentFlashcard}
         isFlipped={isFlipped}
         handleFlip={handleFlip}
