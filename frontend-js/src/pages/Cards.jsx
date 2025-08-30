@@ -13,6 +13,8 @@ import {
 } from "../graphql/mutations/cardMutations";
 
 export default function Cards() {
+
+  const [status, setStatus] = useState("ALL"); // "ALL" | "KNOWN" | "ALMOST" | "UNKNOWN";
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCard, setEditingCard] = useState(null);
   const [createFlashcard] = useMutation(CREATE_FLASHCARD);
