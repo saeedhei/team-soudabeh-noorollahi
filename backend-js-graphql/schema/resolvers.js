@@ -1,3 +1,4 @@
+
 // import Flashcard from "../models/Flashcard.js";
 
 // const resolvers = {
@@ -18,11 +19,10 @@
 //         filter.status = { $in: [status, status.toLowerCase()] };
 //       }
 
-//       const flashcards = await Flashcard.find()
-//         .sort({ createdAt: -1 })
-//         .skip(skip)
-//         .limit(limit);
-//       const total = await Flashcard.countDocuments();
+//       const [flashcards, total] = await Promise.all([
+//         Flashcard.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+//         Flashcard.countDocuments(filter),
+//       ]);
 //       return { flashcards, total };
 //     },
 
@@ -73,6 +73,8 @@
 
 // export default resolvers;
 
+
+
 import Flashcard from "../models/Flashcard.js";
 
 const resolvers = {
@@ -108,10 +110,14 @@ const resolvers = {
       });
     },
 
-    getAllFlashcards: async () => {
-      return await Flashcard.find().sort({ _id: -1 });
-    },
+    getAllFlashcards: async (_, { status}) => {
+       const filter = {};
+  if (status) {
+    filter.status = { $in: [status.toLowerCase()] };
+  }
+       return await Flashcard.find(filter).sort({ _id: -1 });
   },
+},
 
   Mutation: {
     // Create new flashcard
